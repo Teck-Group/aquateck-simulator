@@ -1,7 +1,17 @@
 console.log("login.js geladen");
 
 import { auth } from "/aquateck-simulator/includes/firebase/config.js";
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const provider = new GoogleAuthProvider();
+
+document.getElementById("googleLogin").addEventListener("click", async () => {
+  try {
+    await singInWithPopup(auth, provider);
+    window.location.href = "dashboard.html";
+  } catch (error) {
+    console.error(error);
+  }
 
 window.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("loginForm");
