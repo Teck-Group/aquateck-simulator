@@ -15,7 +15,7 @@ document.getElementById("googleLogin").addEventListener("click", async () => {
   }
 });
 
-/email and password login
+//email and password login
 window.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("loginForm");
   const errorE1 = document.getElementById("error");
