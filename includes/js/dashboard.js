@@ -66,7 +66,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   if (role.includes("admin")){
-    document.getElementById("admin-addUser");
+    document.getElementById("admin-addUser").style.display = "block";
     console.log("Add user allowed");
   }
   else {
