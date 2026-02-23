@@ -23,6 +23,7 @@ onAuthStateChanged(auth, async (user) => {
   const userData = userSnap.data();
   
   const simulators = userData.simulators || [];
+  const role = userData.role || [];
 
   if (simulators.includes("base")) {
     document.getElementById("sim-base").style.display = "block";
