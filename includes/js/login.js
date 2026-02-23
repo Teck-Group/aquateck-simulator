@@ -5,14 +5,17 @@ import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 
 
 const provider = new GoogleAuthProvider();
 
+// google login
 document.getElementById("googleLogin").addEventListener("click", async () => {
   try {
-    await singInWithPopup(auth, provider);
+    await signInWithPopup(auth, provider);
     window.location.href = "dashboard.html";
   } catch (error) {
     console.error(error);
   }
+});
 
+/email and password login
 window.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("loginForm");
   const errorE1 = document.getElementById("error");
