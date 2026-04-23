@@ -59,7 +59,7 @@ function generateData() {
   currentLng += (Math.random() - 0.5) * 0.001;
 
   // 📻 VHF
-  const channels = [6, 8, 9, 10, 13, 16, 17, 70];
+  const channels = [16];
   const kanaal = channels[Math.floor(Math.random() * channels.length)];
 
   return {
