@@ -21,9 +21,9 @@ L.tileLayer("https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png", {
 }).addTo(map);
 
 const boatIcon = L.icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/68/68636.png",
-  iconSize: [32, 32],
-  iconAnchor: [16, 16]
+  iconUrl: "/aquateck-simulator/assets/arrow.svg",
+  iconSize: [40, 40],
+  iconAnchor: [20, 20]
 });
 
 const marker = L.marker(defaultLatLng, { icon: boatIcon }).addTo(map);
