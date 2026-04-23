@@ -20,7 +20,13 @@ L.tileLayer("https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png", {
   attribution: "© OpenSeaMap"
 }).addTo(map);
 
-const marker = L.marker(defaultLatLng).addTo(map);
+const boatIcon = L.icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/68/68636.png",
+  iconSize: [32, 32],
+  iconAnchor: [16, 16]
+});
+
+const marker = L.marker(defaultLatLng, { icon: boatIcon }).addTo(map);
 
 // ===== SIMULATIE VARIABELEN =====
 let currentSpeed = 10;
