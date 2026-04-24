@@ -1,3 +1,5 @@
+import { moveAlongRoute, route } from "./route.js";
+
 // ===== INSTELLINGEN =====
 const settings = {
   season: "zomer",
@@ -55,18 +57,20 @@ function generateData() {
   currentSpeed += (targetSpeed - currentSpeed) * 0.1;
 
   // 📍 beweging
-  currentLat += (Math.random() - 0.5) * 0.001;
-  currentLng += (Math.random() - 0.5) * 0.001;
+  const newPos = moveAlongRoute(currentLat, currentLng);
+
+  currentLat = newPos.lat;
+  currentLng = newPos.lng;
 
   // 📻 VHF
   const channels = [16];
   const kanaal = channels[Math.floor(Math.random() * channels.length)];
 
   return {
-    locatie: "Simulatie actief",
+    locatie: "Op route",
     snelheid: currentSpeed.toFixed(1),
-    lat: 51.23120712133122,
-    lng: 4.393429787066567,
+    lat: currentLat,
+    lng: currentLng,
     kanaal
   };
 }
