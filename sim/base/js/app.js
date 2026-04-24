@@ -5,9 +5,9 @@ const settings = {
 };
 
 // ===== KAART =====
-const defaultLatLng = [51.2194, 4.4025]; // Antwerpen
+const defaultLatLng = [51.231412, 2.923875]; // Startplaats Oostende
 
-const map = L.map("map").setView(defaultLatLng, 13);
+const map = L.map("map").setView(defaultLatLng, 13); // 13 = zoomlevel
 
 // Basiskaart (licht)
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -84,7 +84,7 @@ setInterval(() => {
   // kaart
   const latlng = [data.lat, data.lng];
   marker.setLatLng(latlng);
-  map.setView(latlng);
+  marker.setLatLng(latlng);
 
 }, 1000);
 
