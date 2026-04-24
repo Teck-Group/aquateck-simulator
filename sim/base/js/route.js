@@ -1,5 +1,4 @@
-// Route config
-// coördinaten
+// ===== ROUTE CONFIG =====
 export const route = [
   [51.231412, 2.923875],
   [51.233579, 2.922947],
@@ -15,11 +14,31 @@ export const route = [
   [51.231412, 2.923875],
 ];
 
-// route state
+// ===== STATE =====
 let routeIndex = 0;
+let currentHeading = 0;
 
-// route logic
-export function moveAlongRoute(currentLat, currentLng, speed = 0.02) {
+// ===== HELPERS =====
+
+// bereken richting (in graden)
+function getHeading(dx, dy) {
+  return Math.atan2(dy, dx) * (180 / Math.PI);
+}
+
+// smooth draaien (belangrijk!)
+function smoothRotate(current, target, factor = 0.1) {
+  let diff = target - current;
+
+  // kortste draai kiezen (-180 tot 180)
+  if (diff > 180) diff -= 360;
+  if (diff < -180) diff += 360;
+
+  return current + diff * factor;
+}
+
+// ===== MAIN =====
+export function moveAlongRoute(currentLat, currentLng, speed = 10) {
+
   const target = route[routeIndex];
 
   const dx = target[0] - currentLat;
@@ -27,21 +46,25 @@ export function moveAlongRoute(currentLat, currentLng, speed = 0.02) {
 
   const distance = Math.sqrt(dx * dx + dy * dy);
 
-  // als dicht genoeg bij punt zijn --> volgend punt
-  if (distance < 0.0003) {
+  // 👉 richting berekenen
+  const targetHeading = getHeading(dx, dy);
+  currentHeading = smoothRotate(currentHeading, targetHeading);
+
+  // 👉 volgende punt
+  if (distance < 0.0005) {
     routeIndex++;
-
-    //opnieuw beginnen (loop)
-    if (routeIndex >= route.length) {
-      routeIndex = 0;
-    }
-
-    return { lat: currentLat, lng: currentLng };
+    if (routeIndex >= route.length) routeIndex = 0;
   }
 
-  // beweging richting target
-  const newLat = currentLat + dx * speed;
-  const newLng = currentLng + dy * speed;
+  // 👉 snelheid omzetten naar beweging
+  const speedFactor = speed / 5000;
 
-  return { lat: newLat, lng: newLng };
+  const newLat = currentLat + Math.cos(currentHeading * Math.PI / 180) * speedFactor;
+  const newLng = currentLng + Math.sin(currentHeading * Math.PI / 180) * speedFactor;
+
+  return {
+    lat: newLat,
+    lng: newLng,
+    heading: currentHeading
+  };
 }
