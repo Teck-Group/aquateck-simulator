@@ -7,21 +7,25 @@ const settings = {
 };
 
 // ===== KAART =====
-const defaultLatLng = [51.231412, 2.923875]; // Startplaats Oostende
+const defaultLatLng = [51.231412, 2.923875];
 
-const map = L.map("map").setView(defaultLatLng, 13); // 13 = zoomlevel
+const map = L.map("map").setView(defaultLatLng, 13);
 
-// Basiskaart (licht)
+// Basiskaart
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19
 }).addTo(map);
 
-// 🌊 Maritieme overlay
+// Maritieme overlay
 L.tileLayer("https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: "© OpenSeaMap"
 }).addTo(map);
 
+// 🔥 ROUTE tekenen (NU OP JUISTE PLAATS)
+L.polyline(route, { color: "cyan", weight: 3 }).addTo(map);
+
+// ===== BOOT =====
 const boatIcon = L.icon({
   iconUrl: "/aquateck-simulator/assets/arrow.svg",
   iconSize: [40, 40],
@@ -40,38 +44,36 @@ function generateData() {
 
   let targetSpeed = 10;
 
-  // 🌡️ seizoen
+  // seizoen
   if (settings.season === "winter") targetSpeed -= 1;
   if (settings.season === "zomer") targetSpeed += 1;
 
-  // 🌦️ weer
+  // weer
   if (settings.weather === "storm") targetSpeed -= 4;
   if (settings.weather === "wind") targetSpeed -= 2;
 
-  // 🎲 random
-  const random = (Math.random() * 2 - 1);
+  // random
+  targetSpeed += (Math.random() * 2 - 1);
 
-  targetSpeed += random;
-
-  // ⚓ INERTIA (belangrijk!)
+  // inertia
   currentSpeed += (targetSpeed - currentSpeed) * 0.1;
 
-  // 📍 beweging
-  const newPos = moveAlongRoute(currentLat, currentLng);
+  // 🔥 beweging met snelheid
+  const newPos = moveAlongRoute(currentLat, currentLng, currentSpeed);
 
   currentLat = newPos.lat;
   currentLng = newPos.lng;
 
-  // 📻 VHF
-  const channels = [16];
-  const kanaal = channels[Math.floor(Math.random() * channels.length)];
+  // VHF
+  const kanaal = 16;
 
   return {
     locatie: "Op route",
     snelheid: currentSpeed.toFixed(1),
     lat: currentLat,
     lng: currentLng,
-    kanaal
+    kanaal,
+    heading: newPos.heading
   };
 }
 
@@ -88,7 +90,12 @@ setInterval(() => {
   // kaart
   const latlng = [data.lat, data.lng];
   marker.setLatLng(latlng);
-  marker.setLatLng(latlng);
+
+  // 🔥 ROTATIE (HEEL BELANGRIJK)
+  const el = marker.getElement();
+  if (el) {
+    el.style.transform = `rotate(${data.heading}deg)`;
+  }
 
 }, 1000);
 
