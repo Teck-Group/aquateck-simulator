@@ -22,7 +22,7 @@ let currentHeading = 0;
 
 // bereken richting (in graden)
 function getHeading(dx, dy) {
-  return Math.atan2(dy, dx) * (180 / Math.PI);
+  return Math.atan2(dx, dy) * (180 / Math.PI);
 }
 
 // smooth draaien (belangrijk!)
@@ -41,8 +41,8 @@ export function moveAlongRoute(currentLat, currentLng, speed = 10) {
 
   const target = route[routeIndex];
 
-  const dx = target[0] - currentLat;
-  const dy = target[1] - currentLng;
+  const dx = target[0] - currentLng;
+  const dy = target[1] - currentLat;
 
   const distance = Math.sqrt(dx * dx + dy * dy);
 
@@ -59,8 +59,8 @@ export function moveAlongRoute(currentLat, currentLng, speed = 10) {
   // 👉 snelheid omzetten naar beweging
   const speedFactor = speed / 5000;
 
-  const newLat = currentLat + Math.cos(currentHeading * Math.PI / 180) * speedFactor;
-  const newLng = currentLng + Math.sin(currentHeading * Math.PI / 180) * speedFactor;
+  const newLat = currentLat + Math.sin(currentHeading * Math.PI / 180) * speedFactor;
+  const newLng = currentLng + Math.cos(currentHeading * Math.PI / 180) * speedFactor;
 
   return {
     lat: newLat,
