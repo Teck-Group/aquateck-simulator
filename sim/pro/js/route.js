@@ -41,8 +41,8 @@ export function moveAlongRoute(currentLat, currentLng, speed = 10) {
 
   const target = route[routeIndex];
 
-  const dx = target[0] - currentLng;
-  const dy = target[1] - currentLat;
+  const dx = target[1] - currentLng;
+  const dy = target[0] - currentLat;
 
   const distance = Math.sqrt(dx * dx + dy * dy);
 
