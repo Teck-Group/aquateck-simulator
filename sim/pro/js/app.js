@@ -3,7 +3,8 @@ import { moveAlongRoute, route } from "./route.js";
 // ===== INSTELLINGEN =====
 const settings = {
   season: "zomer",
-  weather: "calm"
+  weather: "calm",
+  charger : "off"
 };
 
 // ===== KAART =====
@@ -43,6 +44,7 @@ let currentLng = defaultLatLng[1];
 function generateData() {
 
   let targetSpeed = 10;
+  let charger = "off";
 
   // seizoen
   if (settings.season === "winter") targetSpeed -= 1;
@@ -52,6 +54,9 @@ function generateData() {
   if (settings.weather === "storm") targetSpeed -= 4;
   if (settings.weather === "wind") targetSpeed -= 2;
 
+  // lader
+  if (settings.charger === "on") charger = "on";
+  if (settings.charger === "off") charger = "off";
   // random
   targetSpeed += (Math.random() * 2 - 1);
 
